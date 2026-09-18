@@ -42,9 +42,20 @@ print("Tavily API key found:", bool(TAVILY_API_KEY))
 class Source(BaseModel):
     """Schema for a source used by the agent."""
 
+    title:str = Field(description="The title of the source used to answer the question.")
+
     url: str = Field(
         description="The URL of the source used to answer the question."
     )
+
+    relavance:float = Field(
+        description="The relevance score of the source to the question."
+    )
+
+    published_date:str = Field(
+        description="The published date of the source used to answer the question."
+    )
+
 
 
 class AgentResponse(BaseModel):
@@ -60,7 +71,7 @@ class AgentResponse(BaseModel):
     )
 
 
-# ============================================================
+# ========cd====================================================
 # 4. Create Gemini LLM
 # ============================================================
 
@@ -108,10 +119,12 @@ def main():
     print("======================================")
 
     question = (
-        "Use the Tavily search tool to find "
-        "the current weather in Tokyo. "
-        "Then provide a concise answer and "
-        "include the URLs of the sources you used."
+       "Use the Tavily search tool to find the current weather in Kochi, Kerala. "
+    "Then provide a concise answer and include the sources used. "
+    "For each source provide the title, URL, Tavily relevance score, "
+    "and publication date if explicitly available in the search result. "
+    "If only a 'Last Updated' date is available, use that date and label it "
+    "as the last updated date. Do not invent dates."
     )
 
     print("\nUser question:")
